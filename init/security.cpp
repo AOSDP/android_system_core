@@ -73,6 +73,7 @@ Result<Success> MixHwrngIntoLinuxRngAction(const BuiltinArguments&) {
         }
 
         chunk_size = TEMP_FAILURE_RETRY(write(urandom_fd, buf, chunk_size));
+        explicit_bzero(buf, chunk_size);
         if (chunk_size == -1) {
             return ErrnoError() << "Failed to write to /dev/urandom";
         }
